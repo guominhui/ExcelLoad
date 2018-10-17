@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datacenter.core.dao.ai.AiMapper">
+	<!-- 查找 -->
+
+	
+	<select id="getAiInfos" parameterType="int"
+		resultMap="AiTemplateMap">
+		select* from t_flash_ai 
+		order by f_id asc limit #{arg0},#{arg1}
+		<!-- <if test="startIndex!=0">limit #{startIndex},</if>
+		<if test="length!=0">#{length}</if> -->
+	</select>
+	<!-- 插入 -->
+	<!-- useGeneratedKeys设置为"true"表明要MyBatis获取由数据库自动生成的主键；keyProperty="id"指定把获取到的主键值注入到Customer的id属性 -->
+	<insert id="addAiTemplate" parameterType="AiTemplate" useGeneratedKeys="true"
+			keyProperty="id">
+		insert into t_flash_ai
+		(f_name,f_prev_goods_ids,
+		f_action_period,f_single_increases,
+		f_create_time,f_update_time)
+		values(#{name},#{previlegeGoodsIds},
+		#{actionPeriod},#{singleIncreases},#{createTime},#{updateTime})
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteAiTemplate" parameterType="int">
+		delete from t_flash_ai where f_id = #{arg0}
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateAiTemplate" parameterType="AiTemplate">
+		update t_flash_ai set f_name=#{name},
+		f_prev_goods_ids=#{previlegeGoodsIds},
+		f_action_period=#{actionPeriod},
+		f_single_increases=#{singleIncreases},
+		f_update_time=#{updateTime}
+		where f_id = #{id}
+	</update>
+	
+	<resultMap type="com.datacenter.core.pojo.AiTemplate" id="AiTemplateMap">
+		<!-- column:对应的列名 property:对应的属性名 -->
+		<result column="f_id" property="id" />
+		<result column="f_name" property="name" />
+		<result column="f_prev_goods_ids" property="previlegeGoodsIds" />
+		<result column="f_action_period" property="actionPeriod" />
+		<result column="f_single_increases" property="singleIncreases" />
+		<result column="f_create_time" property="createTime" />
+		<result column="f_update_time" property="updateTime" />
+		
+	</resultMap>
+
+</mapper>  
